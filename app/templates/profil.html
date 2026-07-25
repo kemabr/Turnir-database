@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="tk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim - PUBG Turnuvasy</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .close-btn:hover {
+            background: rgba(255, 45, 85, 0.2) !important;
+            border-color: rgba(255, 45, 85, 0.4) !important;
+            color: #ff2d55 !important;
+            transform: rotate(90deg);
+        }
+        .team-code-display {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 14px;
+            margin-top: 16px;
+        }
+        .team-code-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #a0a0c0;
+            margin-bottom: 12px;
+        }
+        .team-code-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 45, 85, 0.2);
+            margin-bottom: 10px;
+        }
+        .team-code-box code {
+            flex: 1;
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            color: #ff2d55;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(255, 45, 85, 0.3);
+        }
+        .team-code-box button {
+            background: rgba(255, 45, 85, 0.15);
+            border: 1px solid rgba(255, 45, 85, 0.3);
+            border-radius: 10px;
+            padding: 10px 16px;
+            color: #ff2d55;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        .team-code-box button:hover {
+            background: rgba(255, 45, 85, 0.25);
+            box-shadow: 0 0 20px rgba(255, 45, 85, 0.2);
+        }
+        .team-code-hint {
+            font-size: 12px;
+            opacity: 0.6;
+            color: #a0a0c0;
+        }
+        .logout-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 24px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .logout-btn-pro {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(255, 45, 85, 0.1), rgba(255, 45, 85, 0.05));
+            border: 1.5px solid rgba(255, 45, 85, 0.3);
+            border-radius: 16px;
+            color: #ff2d55;
+            padding: 16px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+        }
+        .logout-btn-pro:hover {
+            background: linear-gradient(135deg, rgba(255, 45, 85, 0.2), rgba(255, 45, 85, 0.1));
+            border-color: #ff2d55;
+            box-shadow: 0 8px 30px rgba(255, 45, 85, 0.3);
+            transform: translateY(-2px);
+        }
+        .logout-btn-pro i {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container main-content" style="padding-bottom: 80px;">
+        <header class="form-header" style="position:relative;">
+            <a href="/" class="close-btn" style="position:absolute; top:20px; right:20px; width:36px; height:36px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:50%; color:#e8e8e8; font-size:18px; display:flex; align-items:center; justify-content:center; text-decoration:none; transition:all 0.3s; z-index:10;"><i class="fas fa-times"></i></a>
+            <h1>PROFILIM</h1>
+            <p>Katylma statusynyz</p>
+        </header>
+
+        <div class="profile-card">
+            <div class="profile-avatar"><span><i class="fas fa-user"></i></span></div>
+            <div class="profile-info">
+                <h2>{{ katilimci['ad'] }}</h2>
+                <p class="profile-pubg-id">📞 {{ katilimci['telefon'] }}</p>
+                <p class="profile-ref">{{ katilimci['referans_kodu'] }}</p>
+            </div>
+        </div>
+        
+        <div class="status-card">
+            <h3>STATUSYM</h3>
+            <div class="status-steps">
+                <div class="status-step {% if katilimci['kayit_tarihi'] %}completed{% else %}pending{% endif %}">
+                    <div class="step-icon">{% if katilimci['kayit_tarihi'] %}<i class="fas fa-check-circle"></i>{% else %}<i class="fas fa-hourglass-half"></i>{% endif %}</div>
+                    <div class="step-info">
+                        <span class="step-title">Hasaba Alyndy</span>
+                        <span class="step-date">{{ katilimci['kayit_tarihi'] or 'Garasyl yar' }}</span>
+                    </div>
+                </div>
+                <div class="status-step {% if katilimci['odeme_durumu'] == 1 %}completed{% else %}pending{% endif %}">
+                    <div class="step-icon">{% if katilimci['odeme_durumu'] == 1 %}<i class="fas fa-check-circle"></i>{% else %}<i class="fas fa-hourglass-half"></i>{% endif %}</div>
+                    <div class="step-info">
+                        <span class="step-title">Toleg</span>
+                        <span class="step-date">
+                            {% if katilimci['odeme_durumu'] == 1 %}Toleg edildi{% else %}Toleg garasyl yar{% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="status-step {% if katilimci['admin_onay'] == 1 %}completed{% elif katilimci['admin_onay'] == 2 %}rejected{% else %}pending{% endif %}">
+                    <div class="step-icon">
+                        {% if katilimci['admin_onay'] == 1 %}<i class="fas fa-check-circle"></i>{% elif katilimci['admin_onay'] == 2 %}<i class="fas fa-times-circle"></i>{% else %}<i class="fas fa-hourglass-half"></i>{% endif %}
+                    </div>
+                    <div class="step-info">
+                        <span class="step-title">Admin Tassyklamasy</span>
+                        <span class="step-date">
+                            {% if katilimci['admin_onay'] == 1 %}Tassyklandy!{% elif katilimci['admin_onay'] == 2 %}Ret edildi{% else %}Garasyl yar{% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {% if katilimci['admin_onay'] == 1 %}
+            <div class="status-badge approved">Siz Ustunlikli Tassyklandynyz!</div>
+            {% elif katilimci['admin_onay'] == 2 %}
+            <div class="status-badge rejected">Ret Edildi</div>
+            <a href="/odeme" class="btn-primary" style="margin-top:15px;">TOLEGE GAYTADAN GIT</a>
+            {% elif katilimci['odeme_durumu'] == 0 %}
+            <a href="/odeme" class="btn-primary" style="margin-top:15px;">TOLEGE GIT</a>
+            {% endif %}
+        </div>
+        
+          <div class="team-section">
+            <h3>TOPARYM</h3>
+            {% if katilimci['takim_kodu'] %}
+                <div class="team-card">
+                    <div class="team-header">
+                        <h4>{{ katilimci['takim_adi'] or 'Toparym' }}</h4>
+                    </div>
+                    <div class="team-code-display">
+                        <p class="team-code-label">Topar Kodyňyz:</p>
+                        <div class="team-code-box">
+                            <code>{{ katilimci['takim_kodu'] }}</code>
+                            <button onclick="copyTeamCode()" type="button"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <p class="team-code-hint">Bu kody dostlaryňyza paýlaşyň</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="team-empty">
+                    <p><i class="fas fa-users" style="font-size:32px; color:#ff2d55; margin-bottom:12px; display:block;"></i>Size topar baglanmady.</p>
+                    <a href="/takim" class="btn-primary">TOPARA GOSUL</a>
+                </div>
+            {% endif %}
+        </div>
+        
+             <div class="logout-section">
+            <form action="/logout" method="POST" onsubmit="return confirm('Hakykatdanam cykmak isleyarsinizmi?');">
+                <button type="submit" class="logout-btn-pro">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Hasapdan Çykyş</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function copyTeamCode() {
+            const code = {{ katilimci['takim_kodu']|tojson }};
+            copyToClipboard(code, 'Topar kody nusga alyndy!');
+        }
+        function copyToClipboard(text, msg) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => alert(msg));
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); alert(msg); } catch(e) { alert(text); }
+                document.body.removeChild(ta);
+            }
+        }
+
+        // Logout form ulanýar
+    </script>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-container">
+            <a href="/" class="bottom-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Esasy</span>
+            </a>
+            <a href="/turnir" class="bottom-nav-item">
+                <i class="fas fa-trophy"></i>
+                <span>Turnir</span>
+            </a>
+            <a href="/magazyn" class="bottom-nav-item">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Magazyn</span>
+            </a>
+            <a href="/menyu" class="bottom-nav-item">
+                <i class="fas fa-bars"></i>
+                <span>Menýu</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>                     
